@@ -1396,7 +1396,8 @@ export class Graph3DView extends ItemView {
           const fileQuery = query.substring(5).trim();
           let fileRegex: RegExp | undefined;
           if (fileQuery.includes("*")) {
-            const pattern = fileQuery.replace(/\./g, "\\.").replace(/\*/g, ".*");
+            // Escape every regex metacharacter except "*", which is the wildcard.
+            const pattern = fileQuery.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replace(/\*/g, ".*");
             fileRegex = new RegExp(`^${pattern}$`, "i");
           }
           return {
